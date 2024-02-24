@@ -1,79 +1,55 @@
-# RahulKumarWallet Smart Contract
+# Security Management Smart Contract
 
-This Solidity smart contract, named `RahulKumarWallet`, is a simple Ethereum-based wallet that allows the owner to deposit, withdraw, and purchase NFTs. The contract is written in Solidity version 0.8.9.
+This Solidity smart contract, named `SecurityManagement`, provides a simple role-based access control system for managing user roles within a decentralized application (DApp).
 
 ## Features
 
-1. **Initialization**: The contract is initialized with an initial balance and a secret key.
-
-2. **Deposit**: The owner can deposit tokens into the wallet by providing the correct secret key.
-
-3. **Withdraw**: The owner can withdraw tokens from the wallet, ensuring that the withdrawal amount does not exceed the current balance.
-
-4. **Purchase NFT**: A function `purchaseNFT` is provided to facilitate the purchase of NFTs, which internally calls the `WithdrawToken` function and emits an event.
+- Role-based access control system with predefined roles: Admin, Employee, Guest.
+- Owner has administrative privileges.
+- Events (`RoleAdded` and `RoleRemoved`) to track changes in user roles.
+- Functions to add and remove users, and check the role of a specific user.
 
 ## Smart Contract Details
 
-### State Variables
+### Roles
 
-- `ContractOwner`: The address of the wallet owner.
-- `secretBalance`: The current balance of the wallet.
-- `secretKey`: A secret key required for deposit, withdrawal, and NFT purchase.
+The contract defines the following roles:
 
-### Events
-
-- `onDeposit(uint256 amount)`: Emitted when tokens are deposited into the wallet.
-- `onWithdraw(uint256 amount)`: Emitted when tokens are withdrawn from the wallet.
-- `onPurchaseNFT(uint256 amount)`: Emitted when an NFT is purchased.
-
-### Constructor
-
-The constructor initializes the contract with an initial balance and sets the contract owner as the sender of the deployment transaction.
+- **Admin**: Full administrative privileges.
+- **Employee**: Employee role with specific access rights.
+- **Guest**: Limited privileges for guests.
+- **None**: Default role, indicating no specific role assigned.
 
 ### Functions
 
-- `getBalance()`: Retrieves the current balance of the wallet.
-- `DepositToken(uint256 amt, uint256 key)`: Allows the owner to deposit tokens into the wallet.
-- `WithdrawToken(uint256 amt, uint256 key)`: Allows the owner to withdraw tokens from the wallet, handling insufficient balance with a custom error.
-- `getContractAddress()`: Retrieves the address of the contract.
-- `getContractBalance()`: Retrieves the current balance of the contract.
-- `purchaseNFT(uint256 amt, uint256 key)`: Facilitates the purchase of NFTs, internally calling the `WithdrawToken` function.
+1. **`addUser(address _user, string calldata _role)`**: Adds a new user with the specified role. Only the contract owner can execute this function.
 
+2. **`removeUser(address _user)`**: Removes a user and sets their role to None. Only the contract owner can execute this function.
 
-## Project Setup Instructions
+3. **`checkUserRole(address _user) external view returns (string memory)`**: Retrieves the role of a specific user.
 
-To run this project on your computer after cloning the GitHub repository, follow the steps below:
+### Usage
 
-1. **Install Dependencies:**
-   - Navigate to the project directory in the terminal.
-   - Run the following command to install project dependencies:
-     ```bash
-     npm install
-     ```
+1. Deploy the contract to the Ethereum blockchain.
 
-2. **Start Ethereum Node:**
-   - Open two additional terminals in your Visual Studio Code or preferred code editor.
+2. The contract owner (deployer) is assigned the `Admin` role by default.
 
-   - In the second terminal, start the local Ethereum node using Hardhat:
-     ```bash
-     npx hardhat node
-     ```
+3. Use the `addUser` function to grant roles to other addresses.
 
-3. **Deploy Smart Contract:**
-   - In the third terminal, deploy the smart contract to the local Ethereum network:
-     ```bash
-     npx hardhat run --network localhost scripts/deploy.js
-     ```
+4. Use the `removeUser` function to revoke roles from addresses.
 
-4. **Launch Front-end:**
-   - Go back to the first terminal and start the front-end application:
-     ```bash
-     npm run dev
-     ```
+5. Use the `checkUserRole` function to query the role of a specific address.
 
-5. **Access the Project:**
-   - The project will be accessible on your local machine, typically at [http://localhost:3000/](http://localhost:3000/).
+## Deployment
 
-Now, the project is successfully running on your localhost. Ensure to follow these steps in sequence for a smooth setup process.
+After cloning the github, you will want to do the following to get the code running on your computer.
 
+1. Inside the project directory, in the terminal type: npm i
+2. Open two additional terminals in your VS code
+3. In the second terminal type: **npx hardhat node**
+4. In the third terminal, type: **npx hardhat run --network localhost scripts/deploy.js**
+5. Back in the first terminal, type npm run dev to launch the front-end.
+
+After this, the project will be running on your localhost. 
+Typically at http://localhost:3000/
 
